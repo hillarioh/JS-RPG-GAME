@@ -7,10 +7,9 @@
     "test": "test"
   },
   "scripts": {
-    "build": "webpack",
+    "build": "webpack --mode production",
     "watch": "webpack --watch",
     "dev": "webpack --mode development",
-    "build": "webpack --mode production",
     "start": "webpack-dev-server --mode development --open"
   },
   "keywords": [],
@@ -31,6 +30,10 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "eslint-config-airbnb": "^18.2.0"
+    "eslint-config-airbnb": "^18.2.0",
+    "axios": "^0.19.2",
+    "babel-polyfill": "^6.26.0",
+    "phaser": "^3.23.0",
+    "phaser3-rex-plugins": "^1.1.18"
   }
 }
