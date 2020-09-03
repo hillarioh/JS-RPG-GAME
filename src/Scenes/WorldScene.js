@@ -25,6 +25,7 @@ class WorldScene extends Phaser.Scene {
         gameState.obstacles = gameState.map.createDynamicLayer('mkuhhv', [gameState.tile1,gameState.tile2,gameState.tile3], 0, 0);
         gameState.rest = gameState.map.createStaticLayer('rest', gameState.tile1, 0, 0);
         gameState.obstacles.setCollisionByExclusion([-1]);
+        // gameState.rest.setCollisionByExclusion([-1]);
 
                
         gameState.player = this.physics.add.sprite(50, 100, 'player', 0).setScale(2);
@@ -38,6 +39,13 @@ class WorldScene extends Phaser.Scene {
         this.cameras.main.setBounds(0, 0, gameState.map.widthInPixels, gameState.map.heightInPixels);
         this.cameras.main.startFollow(gameState.player);
         this.cameras.main.roundPixels = true;
+
+        // console.log(gameState.rest);
+
+        this.physics.add.collider(gameState.player,gameState.rest,()=>{
+            
+            gameState.gameOver = this.add.text(222, 250, 'Game Over', { fontSize: '15px', fill: '#000000' , backgroundColor: 'yellow'});
+        });
 
 
         this.createAnimations();
