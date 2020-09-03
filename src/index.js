@@ -1,6 +1,8 @@
 import 'phaser';
 import BootScene from './Scenes/BootScene';
 import WorldScene from './Scenes/WorldScene';
+import FightScene from './Scenes/FightScene';
+import UIScene from './Scenes/UIScene';
 
 const gameState = {};
 
@@ -23,7 +25,7 @@ const config = {
           enableBody: true,
       }
   },
-  scene: [BootScene,WorldScene]
+  scene: [BootScene,WorldScene,FightScene,UIScene]
 };
 
 const game = new Phaser.Game(config);
