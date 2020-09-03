@@ -44,8 +44,7 @@ class WorldScene extends Phaser.Scene {
 
         this.physics.add.collider(gameState.player,gameState.rest,()=>{
             this.scene.stop('WorldScene');
-			this.scene.start('BattleScene');
-            gameState.gameOver = this.add.text(222, 250, 'Game Over', { fontSize: '15px', fill: '#000000' , backgroundColor: 'yellow'});
+			this.scene.start('FightScene');
         });
 
 
