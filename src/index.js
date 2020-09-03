@@ -6,8 +6,14 @@ const gameState = {};
 
 const config = {
   type: Phaser.AUTO,
-  width:800,
-  height:600,
+  // width:500,
+  // height:400,
+  width: 1024,
+  height: 768,
+  scale: {
+      mode: Phaser.Scale.FIT,
+      autoCenter: Phaser.Scale.CENTER_BOTH
+  },
   backgroundColor: "#ded34a",
   pixelArt: true,
   physics: {
