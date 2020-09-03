@@ -10,12 +10,9 @@ const config = {
   type: Phaser.AUTO,
   // width:500,
   // height:400,
-  width: 1024,
-  height: 768,
-  scale: {
-      mode: Phaser.Scale.FIT,
-      autoCenter: Phaser.Scale.CENTER_BOTH
-  },
+  width: 1000,
+    height: 640,
+    // zoom: 1,
   backgroundColor: "#ded34a",
   pixelArt: true,
   physics: {
@@ -25,7 +22,7 @@ const config = {
           enableBody: true,
       }
   },
-  scene: [BootScene,WorldScene,FightScene,UIScene]
+  scene: [BootScene,WorldScene,FightScene,UIScene,]
 };
 
 const game = new Phaser.Game(config);

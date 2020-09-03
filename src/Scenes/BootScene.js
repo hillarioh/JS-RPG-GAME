@@ -6,7 +6,8 @@ class BootScene extends Phaser.Scene {
     }
 
     preload(){
-     
+        this.load.image('dragonblue', 'assets/dragonblue.png');
+        this.load.image('dragonorrange', 'assets/orange.png');
 
     }
 
