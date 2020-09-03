@@ -65,3 +65,32 @@ class Menu extends Phaser.GameObjects.Container {
         // wen the player confirms his slection, do the action
     } 
 }
+
+class HeroesMenu extends Menu {
+    constructor(x,y,scene){
+        super(x,y,scene);
+    }
+}
+
+class ActionsMenu extends Menu {
+    constructor(x,y,scene){
+        super(x,y,scene);
+        this.addMenuItem('Attack');
+    }
+
+    confirm(){
+
+    }
+}
+
+class EnemiesMenu extends Menu {
+    constructor(x,y,scene){
+        super(x,y,scene);
+    }
+
+    confirm(){
+
+    }
+}
+
+export {MenuItem,Menu,HeroesMenu,ActionsMenu,EnemiesMenu};
