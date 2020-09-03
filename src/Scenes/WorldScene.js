@@ -7,32 +7,31 @@ class WorldScene extends Phaser.Scene {
     }
 
     preload(){
-        this.load.image('tiles', 'assets/map/tmw_desert_spacing.png');
-        
+        this.load.image('tile1', 'assets/map/tmw_desert_spacing.png');
+        this.load.image('tile2', 'assets/map/slopes32mud.png');
+        this.load.image('tile3', 'assets/map/walls_1x2.png');
         this.load.tilemapTiledJSON('map', 'assets/map/desert.json');
         this.load.spritesheet('player', 'assets/RPG_assets.png', { frameWidth: 16, frameHeight: 16 });
 
     }
 
     create(){
-        // var tiles = map.addTilesetImage('Desert', 'tiles');
-        // var layer = map.createDynamicLayer('Ground', tiles, 0, 0);
 
         gameState.map = this.make.tilemap({key: 'map'});
-        gameState.tiles = gameState.map.addTilesetImage('Desert', 'tiles');
-        gameState.layer = gameState.map.createStaticLayer('Ground', gameState.tiles, 0, 0);
-        gameState.layer.setCollisionByExclusion([-1]);
+        gameState.tile1 = gameState.map.addTilesetImage('Desert', 'tile1');
+        gameState.tile2 = gameState.map.addTilesetImage('mijguy', 'tile2');
+        gameState.tile3 = gameState.map.addTilesetImage('walls', 'tile3');
+        gameState.desert = gameState.map.createStaticLayer('Ground', gameState.tile1, 0, 0);
+        gameState.obstacles = gameState.map.createDynamicLayer('mkuhhv', [gameState.tile1,gameState.tile2,gameState.tile3], 0, 0);
+        gameState.rest = gameState.map.createStaticLayer('rest', gameState.tile1, 0, 0);
+        gameState.obstacles.setCollisionByExclusion([-1]);
 
-        // gameState.tiles = gameState.map.addTilesetImage('Desert', 'tiles'); 
-           // var grass = gameState.map.createStaticLayer('Grass', gameState.tiles, 0, 0);
-        // var obstacles = gameState.map.createStaticLayer('Obstacles', gameState.tiles, 0, 0);
-        // obstacles.setCollisionByExclusion([-1]);
-
-        this.add.text(100,100,"GAME TIME");
+               
         gameState.player = this.physics.add.sprite(50, 100, 'player', 0).setScale(2);
         this.physics.world.bounds.width = gameState.map.widthInPixels;
         this.physics.world.bounds.height = gameState.map.heightInPixels;
         gameState.player.setCollideWorldBounds(true);
+        this.physics.add.collider(gameState.player, gameState.obstacles);
 
         gameState.cursors = this.input.keyboard.createCursorKeys();
 
@@ -43,8 +42,9 @@ class WorldScene extends Phaser.Scene {
 
         this.createAnimations();
 
-     
     }
+
+
 
     createAnimations(){
         this.anims.create({
@@ -81,21 +81,21 @@ class WorldScene extends Phaser.Scene {
         // Horizontal movement
         if (gameState.cursors.left.isDown)
         {
-            gameState.player.body.setVelocityX(-80);
+            gameState.player.body.setVelocityX(-180);
             gameState.player.anims.play('left',true);
         }
         else if (gameState.cursors.right.isDown)
         {
-            gameState.player.body.setVelocityX(80);
+            gameState.player.body.setVelocityX(180);
             gameState.player.anims.play('right',true);
         } else if (gameState.cursors.up.isDown)
         {
-            gameState.player.body.setVelocityY(-80);
+            gameState.player.body.setVelocityY(-180);
             gameState.player.anims.play('up',true);
         }
         else if (gameState.cursors.down.isDown)
         {
-            gameState.player.body.setVelocityY(80);
+            gameState.player.body.setVelocityY(180);
             gameState.player.anims.play('down',true);
         }  else {
             gameState.player.anims.stop();

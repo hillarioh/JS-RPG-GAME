@@ -22,8 +22,7 @@
     "babel-jest": "^26.3.0",
     "babel-loader": "^8.1.0",
     "css-loader": "^4.2.0",
-    "eslint": "^7.6.0",
-    "eslint-plugin-import": "^2.22.0",
+  
     "file-loader": "^6.0.0",
     "jest": "^26.3.0",
     "style-loader": "^1.2.1",
@@ -31,6 +30,6 @@
     "webpack-cli": "^3.3.12"
   },
   "dependencies": {
-    "eslint-config-airbnb": "^18.2.0"
+    
   }
 }
