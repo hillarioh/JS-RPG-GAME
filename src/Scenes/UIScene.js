@@ -31,6 +31,8 @@ class UIScene extends Phaser.Scene {
         this.menus.add(gameState.actionsMenu);
         this.menus.add(gameState.enemiesMenu);
 
+        gameState.fightScene = this.scene.get('FightScene');
+
         gameState.fightCursors = this.input.keyboard.createCursorKeys();
 
         this.remapHeroes();

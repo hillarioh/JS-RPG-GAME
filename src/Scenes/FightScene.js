@@ -27,6 +27,24 @@ class FightScene extends Phaser.Scene {
          gameState.units = gameState.heroes.concat(gameState.enemies);
          
          this.scene.launch('UIScene');
+
+        gameState.index = -1;
+    }
+
+    nextTurn() {
+        gameState.index++;
+        if(gameState.index >= gameState.units.length) {
+            gameState.index = 0;
+        }
+        if(gameState.units[gameState.index]) {
+            if(gameState.units[gameState.index] instanceof PlayerCharacter) {                
+                this.events.emit('PlayerSelect', gameState.index);
+            } else { 
+                var r = Math.floor(Math.random() * gameState.heroes.length);
+                gameState.units[gameState.index].attack(gameState.heroes[r]);  
+                this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
+            }
+        }
     }
 }
 
