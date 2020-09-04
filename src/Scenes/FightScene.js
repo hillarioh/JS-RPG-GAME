@@ -29,6 +29,9 @@ class FightScene extends Phaser.Scene {
          this.scene.launch('UIScene');
 
         gameState.index = -1;
+
+        gameState.timeEvent = this.time.addEvent({delay: 2000, callback: this.exitBattle, callbackScope: this});
+        this.sys.events.on('wake', this.wake, this);
     }
 
     nextTurn() {
@@ -45,6 +48,24 @@ class FightScene extends Phaser.Scene {
                 this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
             }
         }
+    }
+
+    exitBattle() {
+        this.scene.sleep('UIScene');
+        this.scene.switch('WorldScene');
+    }
+
+    receivePlayerSelection(action, target) {
+        if(action == 'attack') {            
+            gameState.units[gameState.index].attack(gameState.enemies[target]);              
+        }
+        this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });        
+      
+    }
+
+    wake() {
+        this.scene.run('UIScene');  
+        this.time.addEvent({delay: 2000, callback: this.exitBattle, callbackScope: this});        
     }
 }
 

@@ -96,7 +96,7 @@ class ActionsMenu extends Menu {
     }
 
     confirm(){
-
+        this.scene.events.emit('SelectEnemies');  
     }
 }
 
@@ -106,7 +106,7 @@ class EnemiesMenu extends Menu {
     }
 
     confirm(){
-
+        this.scene.events.emit("Enemy", this.menuItemIndex);
     }
 }
 
