@@ -5,7 +5,7 @@ class Unit extends Phaser.GameObjects.Sprite {
         super(scene,x,y,texture,frame);
         this.type = type;
         this.maxHp = this.hp = hp;
-        this.damage = damage; // default damage 
+        this.damage = damage; 
     }
 
     attack(target){
