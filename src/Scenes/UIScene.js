@@ -18,7 +18,8 @@ class UIScene extends Phaser.Scene {
         this.graphics.strokeRect(188, 150, 130, 100);
         this.graphics.fillRect(188, 150, 130, 100);
 
-         this.menus = this.add.container();
+       
+        this.menus = this.add.container();
                 
         gameState.heroesMenu = new HeroesMenu(195, 153, this);           
         gameState.actionsMenu = new ActionsMenu(100, 153, this);            
@@ -26,11 +27,22 @@ class UIScene extends Phaser.Scene {
          
         gameState.currentMenu = gameState.actionsMenu;
          
-         // add menus to the container
         this.menus.add(gameState.heroesMenu);
         this.menus.add(gameState.actionsMenu);
         this.menus.add(gameState.enemiesMenu);
+
+        this.remapHeroes();
+        this.remapEnemies();
     }
+
+    remapHeroes() {
+        gameState.heroesMenu.remap(gameState.heroes);
+    }
+
+    remapEnemies() {
+        gameState.enemiesMenu.remap(gameState.enemies);
+    }
+    
 }
 
 export default UIScene;
