@@ -1,4 +1,5 @@
 import 'phaser';
+import { gameState } from '.';
 
 class MenuItem extends Phaser.GameObjects.Text {
     constructor(x,y,text,scene){
@@ -26,7 +27,7 @@ class Menu extends Phaser.GameObjects.Container {
         this.y = y;
     }
 
-    addMenuItem(){
+    addMenuItem(unit){
         let menuItem = new MenuItem(0, this.menuItems.length * 20, unit, this.scene);
         this.menuItems.push(menuItem);
         this.add(menuItem); 
@@ -64,6 +65,22 @@ class Menu extends Phaser.GameObjects.Container {
     confirm() {
         // wen the player confirms his slection, do the action
     } 
+
+    clear() {
+        for(var i = 0; i < this.menuItems.length; i++) {
+            this.menuItems[i].destroy();
+        }
+        this.menuItems.length = 0;
+        this.menuItemIndex = 0;
+    }
+
+    remap(units) {
+        this.clear();        
+        for(var i = 0; i < units.length; i++) {
+            var unit = units[i];
+            this.addMenuItem(unit.type);
+        }
+    }
 }
 
 class HeroesMenu extends Menu {
