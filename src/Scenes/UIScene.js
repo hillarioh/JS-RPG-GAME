@@ -1,6 +1,7 @@
 import 'phaser';
 import {MenuItem,Menu,HeroesMenu,ActionsMenu,EnemiesMenu} from '../menu';
 import {gameState} from '../index';
+import Message from '../message';
 
 class UIScene extends Phaser.Scene {
     constructor(){
@@ -38,7 +39,13 @@ class UIScene extends Phaser.Scene {
         this.remapHeroes();
         this.remapEnemies();
 
+        gameState.fightScene.events.on("PlayerSelect", this.onPlayerSelect, this);
+        this.events.on("SelectEnemies", this.onSelectEnemies, this);
+        this.events.on("Enemy", this.onEnemy, this);
+        gameState.fightScene.nextTurn();
 
+        this.message = new Message(this, gameState.fightScene.events);
+        this.add.existing(this.message);
     }
 
     update(){
@@ -54,8 +61,8 @@ class UIScene extends Phaser.Scene {
                     gameState.currentMenu.confirm();
                 } 
             }
-        }
     }
+    
 
     remapHeroes() {
         gameState.heroesMenu.remap(gameState.heroes);
@@ -63,6 +70,25 @@ class UIScene extends Phaser.Scene {
 
     remapEnemies() {
         gameState.enemiesMenu.remap(gameState.enemies);
+    }
+
+    onPlayerSelect(id) {
+        gameState.heroesMenu.select(id);
+        gameState.actionsMenu.select(0);
+        gameState.currentMenu = gameState.actionsMenu;
+    }
+
+    onSelectEnemies() {
+        gameState.currentMenu = gameState.enemiesMenu;
+        gameState.enemiesMenu.select(0);
+    }
+ 
+    onEnemy(index) {
+        gameState.heroesMenu.deselect();
+        gameState.actionsMenu.deselect();
+        gameState.enemiesMenu.deselect();
+        gameState.currentMenu = null;
+        gameState.fightScene.receivePlayerSelection('attack', index);
     }
     
 }
