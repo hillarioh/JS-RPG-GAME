@@ -31,8 +31,28 @@ class UIScene extends Phaser.Scene {
         this.menus.add(gameState.actionsMenu);
         this.menus.add(gameState.enemiesMenu);
 
+        gameState.fightCursors = this.input.keyboard.createCursorKeys();
+
         this.remapHeroes();
         this.remapEnemies();
+
+
+    }
+
+    update(){
+        
+            if(gameState.currentMenu) {
+                if(gameState.fightCursors.up.isDown) {
+                    gameState.currentMenu.moveSelectionUp();
+                } else if(gameState.fightCursors.down.isDown) {
+                    gameState.currentMenu.moveSelectionDown();
+                } else if(gameState.fightCursors.right.isDown || gameState.fightCursors.shift.isDown) {
+     
+                } else if(gameState.fightCursors.space.isDown || gameState.fightCursors.left.isDown) {
+                    gameState.currentMenu.confirm();
+                } 
+            }
+        }
     }
 
     remapHeroes() {
