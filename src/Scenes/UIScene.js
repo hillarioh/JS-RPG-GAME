@@ -36,16 +36,24 @@ class UIScene extends Phaser.Scene {
 
         gameState.fightCursors = this.input.keyboard.createCursorKeys();
 
-        this.remapHeroes();
-        this.remapEnemies();
+      
 
         gameState.fightScene.events.on("PlayerSelect", this.onPlayerSelect, this);
-        this.events.on("SelectEnemies", this.onSelectEnemies, this);
+        this.events.on("SelectAction", this.onSelectedAction, this);
         this.events.on("Enemy", this.onEnemy, this);
-        gameState.fightScene.nextTurn();
+        this.sys.events.on('wake',this.createMenu,this);
+       
 
         this.message = new Message(this, gameState.fightScene.events);
         this.add.existing(this.message);
+
+        this.createMenu();
+    }
+
+    createMenu(){
+        this.remapHeroes();
+        this.remapEnemies();
+        gameState.fightScene.nextTurn();
     }
 
     update(){
@@ -78,7 +86,7 @@ class UIScene extends Phaser.Scene {
         gameState.currentMenu = gameState.actionsMenu;
     }
 
-    onSelectEnemies() {
+    onSelectedAction() {
         gameState.currentMenu = gameState.enemiesMenu;
         gameState.enemiesMenu.select(0);
     }
