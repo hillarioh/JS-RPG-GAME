@@ -112,19 +112,19 @@ import {Enemy,PlayerCharacter} from '../unit';
   
 // }
 
-var BattleScene = new Phaser.Class({
-    Extends: Phaser.Scene,
-    initialize:
-    function BattleScene()
-    {
-      Phaser.Scene.call(this, {key: 'BattleScene'});
-    },
-    create: function() {
+class FightScene extends  Phaser.Scene{
+
+    constructor(){
+        super({key: 'FightScene'});
+    }
+   
+    create() {
       this.cameras.main.setBackgroundColor('rgba(0, 200, 0, 0.5)');
       this.startBattle();
       this.sys.events.on('wake', this.startBattle, this);
-    },
-    startBattle: function() {
+    }
+
+    startBattle() {
       // player character - warrior
       var warrior = new PlayerCharacter(this, 400, 50, 'player', 1, 'Warrior', 100, 20);
       this.add.existing(warrior);
@@ -141,8 +141,9 @@ var BattleScene = new Phaser.Class({
       // launch
       this.index = -1;
       this.scene.launch('UIScene');
-    },
-    nextTurn: function() {
+    }
+
+    nextTurn() {
       if(this.checkEndBattle()) {
         this.endBattle();
         return;
@@ -169,14 +170,16 @@ var BattleScene = new Phaser.Class({
         // add timer for the next turn, so will have smooth gameplay
         this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
       }
-    },
-    receivePlayerSelection: function(action, target) {
+    }
+
+    receivePlayerSelection(action, target) {
       if(action == 'attack') {
         this.units[this.index].attack(this.enemies[target]);
       }
       this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
-    },
-    checkEndBattle: function() {
+    }
+
+    checkEndBattle() {
       var victory = true;
       // if all enemies are dead we have victory
       for(var i = 0; i < this.enemies.length; i++) {
@@ -190,9 +193,9 @@ var BattleScene = new Phaser.Class({
           gameOver = false;
       }
       return victory || gameOver;
-    },
-    endBattle: function() {
-      // clear state, remove sprites
+    }
+
+    endBattle() {
       this.heroes.length = 0;
       this.enemies.length = 0;
       for(var i = 0; i < this.units.length; i++) {
@@ -202,9 +205,9 @@ var BattleScene = new Phaser.Class({
       this.units.length = 0;
       // sleep the UI
       this.scene.sleep('UIScene');
-      // return to WorldScene and sleep current BattleScene
+      // return to WorldScene and sleep current FightScene
       this.scene.switch('WorldScene');
      }
-  });
+  }
 
-export default BattleScene;
+export default FightScene;

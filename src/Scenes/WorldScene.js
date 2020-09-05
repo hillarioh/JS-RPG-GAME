@@ -44,7 +44,7 @@ class WorldScene extends Phaser.Scene {
 
         this.physics.add.collider(gameState.player,gameState.rest,()=>{
             // this.scene.stop('WorldScene');
-			this.scene.switch('BattleScene');
+			this.scene.switch('FightScene');
         });
 
 
