@@ -8,9 +8,14 @@ class FightScene extends Phaser.Scene {
     }
 
     create(){
-         this.cameras.main.setBackgroundColor('rgba(0, 200, 0, 0.5)');
-        
-         gameState.warrior = new PlayerCharacter(this, 250, 50, 'player', 1, 'Warrior', 100, 20);        
+        this.cameras.main.setBackgroundColor('rgba(0, 200, 0, 0.5)');
+        this.startBattle();
+        this.sys.events.on('wake', this.startBattle, this);
+    }
+
+    startBattle(){
+
+        gameState.warrior = new PlayerCharacter(this, 250, 50, 'player', 1, 'Warrior', 100, 20);        
          this.add.existing(gameState.warrior);
          
          gameState.mage = new PlayerCharacter(this, 250, 100, 'player', 4, 'Mage', 80, 8);
@@ -26,35 +31,70 @@ class FightScene extends Phaser.Scene {
          gameState.enemies = [ gameState.dragonblue, gameState.dragonOrange ];
          gameState.units = gameState.heroes.concat(gameState.enemies);
          
-         this.scene.launch('UIScene');
-
         gameState.index = -1;
 
-        gameState.timeEvent = this.time.addEvent({delay: 2000, callback: this.exitBattle, callbackScope: this});
-        this.sys.events.on('wake', this.wake, this);
+        this.scene.launch('UIScene');
     }
 
     nextTurn() {
-        gameState.index++;
-        if(gameState.index >= gameState.units.length) {
-            gameState.index = 0;
+        if(this.checkEndBattle()) {           
+            this.endBattle();
+            return;
         }
-        if(gameState.units[gameState.index]) {
-            if(gameState.units[gameState.index] instanceof PlayerCharacter) {                
-                this.events.emit('PlayerSelect', gameState.index);
-            } else { 
-                var r = Math.floor(Math.random() * gameState.heroes.length);
-                gameState.units[gameState.index].attack(gameState.heroes[r]);  
-                this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
+
+        do {
+            gameState.index++;
+            // if there are no more units, we start again from the first one
+            if(gameState.index >= gameState.units.length) {
+                gameState.index = 0;
             }
+        } while(gameState.units[gameState.index].living);
+        
+        // if its player hero
+        if(gameState.units[gameState.index] instanceof PlayerCharacter) {                
+            this.events.emit("PlayerSelect", gameState.index);
+        } else { // else if its enemy unit
+            // pick random hero
+            var r = Math.floor(Math.random() * gameState.heroes.length);
+            // call the enemy"s attack function 
+            gameState.units[gameState.index].attack(gameState.heroes[r]);  
+            // add timer for the next turn, so will have smooth gameplay
+            this.time.addEvent({ delay: 3000, callback: this.nextTurn, callbackScope: this });
         }
     }
 
-    exitBattle() {
+    checkEndBattle() {        
+        var victory = true;
+        // if all enemies are dead we have victory
+        for(var i = 0; i < gameState.enemies.length; i++) {
+            if(gameState.enemies[i].living)
+                victory = false;
+        }
+        var gameOver = true;
+        // if all heroes are dead we have game over
+        for(var i = 0; i < gameState.heroes.length; i++) {
+            if(gameState.heroes[i].living)
+                gameOver = false;
+        }
+        return victory || gameOver;
+    }
+
+    endBattle() {       
+        // clear state, remove sprites
+        gameState.heroes.length = 0;
+        gameState.enemies.length = 0;
+        for(var i = 0; i < gameState.units.length; i++) {
+            // link item
+            gameState.units[i].destroy();            
+        }
+        gameState.units.length = 0;
+        // sleep the UI
         this.scene.sleep('UIScene');
+        // return to WorldScene and sleep current BattleScene
         this.scene.switch('WorldScene');
     }
 
+  
     receivePlayerSelection(action, target) {
         if(action == 'attack') {            
             gameState.units[gameState.index].attack(gameState.enemies[target]);              
@@ -63,10 +103,7 @@ class FightScene extends Phaser.Scene {
       
     }
 
-    wake() {
-        this.scene.run('UIScene');  
-        this.time.addEvent({delay: 2000, callback: this.exitBattle, callbackScope: this});        
-    }
+  
 }
 
 export default FightScene;

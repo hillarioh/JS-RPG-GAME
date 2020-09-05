@@ -49,9 +49,16 @@ class WorldScene extends Phaser.Scene {
 
 
         this.createAnimations();
+        this.sys.events.on('wake', this.wake, this);
 
     }
-
+    
+    wake() {
+        gameState.cursors.left.reset();
+        gameState.cursors.right.reset();
+        gameState.cursors.up.reset();
+        gameState.cursors.down.reset();
+    }
 
 
     createAnimations(){
