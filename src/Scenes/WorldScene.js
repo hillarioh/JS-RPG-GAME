@@ -40,10 +40,8 @@ class WorldScene extends Phaser.Scene {
         this.cameras.main.startFollow(gameState.player);
         this.cameras.main.roundPixels = true;
 
-        // console.log(gameState.rest);
 
         this.physics.add.collider(gameState.player,gameState.rest,()=>{
-            // this.scene.stop('WorldScene');
 			this.scene.switch('FightScene');
         });
 
