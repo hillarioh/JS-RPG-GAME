@@ -1,5 +1,8 @@
 import 'phaser';
 import BootScene from './Scenes/BootScene';
+import TitleScene from './Scenes/TitleScene';
+import CreditScene from './Scenes/CreditScene';
+import OptionsScene from './Scenes/OptionsScene';
 import WorldScene from './Scenes/WorldScene';
 import FightScene from './Scenes/FightScene';
 import UIScene from './Scenes/UIScene';
@@ -22,7 +25,7 @@ const config = {
           enableBody: true,
       }
   },
-  scene: [BootScene,WorldScene,FightScene,UIScene,]
+  scene: [BootScene,TitleScene,CreditScene,OptionsScene,WorldScene,FightScene,UIScene,]
 };
 
 const game = new Phaser.Game(config);
